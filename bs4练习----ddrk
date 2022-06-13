@@ -32,7 +32,7 @@ with open('ddrk_result.csv', mode='w',encoding='utf-8') as f:
     writer.writeheader()
     writer.writerows(video_list)
 
-
+# 也可通过chrome浏览器的检查来确认元素xpath地址进行查找
 # 有些已经完结，没有更新日期提示
-#date = soup.find_all(text=re.compile('每.*?更新'))
+# date = soup.find_all(text=re.compile('每.*?更新'))
 
