@@ -1,0 +1,38 @@
+import csv
+
+import requests
+from bs4 import BeautifulSoup
+import csv
+
+# 5.4.1 需求分析
+# 目标网站：https://www.damai.cn/projectlist.do。
+# damai使用了反扒策略，我不懂，故尝试：https://ddrk.me/，此处对此网站的运维者致以诚挚的谢意
+# 目标内容：第1页有视频信息，包含影片名、播放地址、分类、更新日期等
+# 任务要求：使用XPath或者Beautiful Soup4完成。将结果保存为CSV文件
+
+# 使用requests获取网页源代码
+url = "https://ddrk.me/"
+html = requests.get(url).content.decode("utf-8")
+video_list = []
+
+# 使用bs4对源代码进行解析
+soup = BeautifulSoup(html, "lxml")
+video_name = soup.find_all(rel="bookmark")
+for each in video_name:
+
+    item = {
+        "video": each.string,
+        'url': each["href"],
+    }
+    video_list.append(item)
+
+# 将解析后的内容存入csv文件
+with open('ddrk_result.csv', mode='w',encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=["video", 'url'])
+    writer.writeheader()
+    writer.writerows(video_list)
+
+
+# 有些已经完结，没有更新日期提示
+#date = soup.find_all(text=re.compile('每.*?更新'))
+
